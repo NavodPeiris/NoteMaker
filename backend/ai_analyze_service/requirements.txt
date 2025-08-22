@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+psycopg2-binary
+sqlalchemy
+mangum
+pydantic
+langchain
+langchain-groq
+qdrant-client
+google-generativeai
+langchain-google-genai
