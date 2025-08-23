@@ -2,7 +2,7 @@
 
 Note Maker is not your average notes app. It provides you with the ability to chat with your notes. It constructs knowledge graph using your notes
 
-[architecture image]
+![architecture image](NoteMaker_Architecture.png)
 
 ### Techologies Used
 
