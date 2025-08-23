@@ -6,3 +6,5 @@ mangum
 python-jose
 google-generativeai
 langchain-google-genai
+redis
+qdrant-client
