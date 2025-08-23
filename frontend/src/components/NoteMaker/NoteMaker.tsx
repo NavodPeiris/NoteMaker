@@ -28,6 +28,8 @@ export default function NoteMaker() {
   const [note, setNote] = useState<string>("");
   const [group, setGroup] = useState<GroupsItem>();
 
+  const [open, setOpen] = useState(false);
+
   const user_id = Number(localStorage.getItem('user_id'));
 
   const queryClient = useQueryClient()
@@ -37,7 +39,7 @@ export default function NoteMaker() {
   return( isLoading ? (<div>Loading</div>): (
     <div className="flex px-2 justify-start">
       <Toaster richColors position="top-center"/>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>Add Note</Button>
         </DialogTrigger>
@@ -153,6 +155,8 @@ export default function NoteMaker() {
 
                 queryClient.invalidateQueries({ queryKey: ["knowledge_graph"] })
                 console.log(res2.data)
+
+                setOpen(false)
               }
               catch(error){
                 console.log(error)

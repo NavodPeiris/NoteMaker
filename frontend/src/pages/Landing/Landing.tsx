@@ -34,7 +34,7 @@ function Landing(){
     }, [navigate]);
 
     return(
-        <div className="flex flex-col h-screen justify-center content-center items-center gap-10">
+        <div className="flex flex-col h-screen justify-start content-center items-center gap-10">
             <ImageCarousel/>
             <div className="flex h-1/4 justify-center content-center items-center gap-10">
                 <div className="flex flex-col max-w-6/12 items-ceter justify-center content-center gap-4">

@@ -45,6 +45,8 @@ export default function NoteCard({noteItem} : NoteProps) {
   const [group, setGroup] = useState<GroupsItem>(noteItem.group);
   const [summary, setSummary] = useState<string>("");
 
+  const [updateOpen, setUpdateOpen] = useState(false);
+
   const queryClient = useQueryClient()
   const user_id = Number(localStorage.getItem('user_id'))
 
@@ -78,13 +80,13 @@ export default function NoteCard({noteItem} : NoteProps) {
 
       <CardFooter className="flex justify-end gap-2">
         {/* update note button*/}
-        <Dialog>
+        <Dialog open={updateOpen} onOpenChange={setUpdateOpen}>
           <DialogTrigger asChild>
-            <Button>Update Note</Button>
+            <Button onClick={() => setUpdateOpen(true)}>Update Note</Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-lg">
             <DialogHeader>
-              <DialogTitle>Create a Note</DialogTitle>
+              <DialogTitle>Update Note</DialogTitle>
             </DialogHeader>
             
             {/* Title */}
@@ -206,8 +208,11 @@ export default function NoteCard({noteItem} : NoteProps) {
 
                   queryClient.invalidateQueries({ queryKey: ["knowledge_graph"] })
                   console.log(res2.data)
+
+                  setUpdateOpen(false)
                 }
                 catch(error){
+                  toast.error("Failed to update note")
                   console.log(error)
                 }
               }}>
@@ -240,6 +245,7 @@ export default function NoteCard({noteItem} : NoteProps) {
               console.log(res2.data)
             }
             catch(err){
+              toast.error("Failed to delete note")
               console.log(err)
             }
           }}
@@ -275,6 +281,7 @@ export default function NoteCard({noteItem} : NoteProps) {
                   setSummary(res.data.summary)
                 }
                 catch(error){
+                  toast.error("Failed to generate summary")
                   console.log(error)
                 }
               }}>

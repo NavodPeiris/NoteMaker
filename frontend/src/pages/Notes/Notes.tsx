@@ -67,6 +67,8 @@ function Notes() {
   const { data: kgData, isLoading: kgLoading, error: kgError } = useKnowledgeGraph({user_id: user_id})
   const { data: groups, isLoading, error } = useGroups({user_id: user_id})
 
+  console.log("kgEdges: ", kgData?.kgEdges)
+
   let groupSelectList = groups?.map<listItem>((grp) => {
     return(
       {

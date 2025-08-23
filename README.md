@@ -6,7 +6,7 @@ Note Maker is not your average notes app. It provides you with the ability to ch
 
 ### Techologies Used
 
-- Frontend: React, Tailwind CSS, ShadCN UI Components, Zustand, TanStack Query
+- Frontend: React, Tailwind CSS, ShadCN UI Components, Zustand, TanStack Query, Reagraph, AI SDK
 - Backend: Python FastAPI, LangChain, GuardRails AI, Qdrant
 - LLM Provider: Groq cloud
 - Embedding Model Provider: Google Generative AI Embeddings 

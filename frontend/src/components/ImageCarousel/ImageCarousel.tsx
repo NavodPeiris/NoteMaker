@@ -22,7 +22,7 @@ export default function ImageCarousel() {
   }, []);
 
   return (
-    <div className="relative max-w-1/3 max-h-2/4 w-1/3 h-2/4 overflow-hidden rounded-xl shadow-lg">
+    <div className="relative max-w-1/3 max-h-2/4 w-1/3 h-2/4 mt-4 overflow-hidden rounded-xl shadow-lg">
       <AnimatePresence mode="wait">
         <motion.img
           key={index}

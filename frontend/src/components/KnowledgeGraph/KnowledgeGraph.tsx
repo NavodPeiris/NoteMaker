@@ -20,6 +20,8 @@ export default function KnowledgeGraph(props: KGInputs){
   return (
     <div style={{ position: "fixed", width: '75%', height: '50%'}}>
       <GraphCanvas
+        draggable={true}
+        labelType="all"
         ref={graphRef}
         nodes={props.nodes}
         edges={props.edges}
