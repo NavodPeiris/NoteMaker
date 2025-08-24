@@ -108,7 +108,7 @@ export default function Register() {
                             localStorage.setItem('expire', expire);
                             localStorage.setItem('user_id', String(user_id));
                             
-                            // Set token in axios headers
+                            // Set JWT in axios headers
                             axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
 
                             navigate("/notes")

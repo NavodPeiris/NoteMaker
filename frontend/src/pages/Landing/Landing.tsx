@@ -24,6 +24,9 @@ function Landing(){
             }
             else{
                 console.log("user logged in")
+                
+                // Set JWT in axios headers
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 navigate("/notes");
             }     
         }
