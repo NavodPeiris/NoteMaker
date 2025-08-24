@@ -24,6 +24,7 @@ load_dotenv()
 API_KEY = os.getenv("GROQ_API_KEY")
 DB_URL = os.getenv("DB_URL")
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+QDRANT_URL = os.getenv("QDRANT_URL")
 
 COLLECTION_NAME = "notes"
 
@@ -31,7 +32,7 @@ genai.configure(api_key=GOOGLE_API_KEY)
 
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 
-qdrant_client = QdrantClient(url="http://localhost:6333")
+qdrant_client = QdrantClient(url=QDRANT_URL)
 vectorstore = Qdrant(client=qdrant_client, collection_name="notes", embeddings=embeddings)
 
 if not qdrant_client.collection_exists(COLLECTION_NAME):

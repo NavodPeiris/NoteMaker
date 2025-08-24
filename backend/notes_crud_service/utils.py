@@ -32,12 +32,13 @@ DB_URL = os.getenv("DB_URL")
 REDIS_HOST = os.getenv("REDIS_HOST")
 REDIS_PORT = os.getenv("REDIS_PORT")
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+QDRANT_URL = os.getenv("QDRANT_URL")
 
 genai.configure(api_key=GOOGLE_API_KEY)
 
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 
-qdrant_client = QdrantClient(url="http://localhost:6333")
+qdrant_client = QdrantClient(url=QDRANT_URL)
 vectorstore = Qdrant(client=qdrant_client, collection_name="notes", embeddings=embeddings)
 
 COLLECTION_NAME = "notes"
