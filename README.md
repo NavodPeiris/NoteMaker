@@ -34,7 +34,7 @@ Note Maker is not your average notes app. It provides you with the ability to ch
     ```
 
 3. create tables
-     - `cd backend/ai_analyze_service`
+     - `cd backend/setup_tables`
      - `python tables.py`
 
 4. run ai_analyze_service
