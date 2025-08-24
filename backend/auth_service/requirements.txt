@@ -3,4 +3,5 @@ uvicorn
 psycopg2-binary
 sqlalchemy
 mangum
-python-jose
+PyJWT
+python-dotenv

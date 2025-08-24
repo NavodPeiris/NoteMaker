@@ -3,8 +3,9 @@ uvicorn
 psycopg2-binary
 sqlalchemy
 mangum
-python-jose
+PyJWT
 google-generativeai
 langchain-google-genai
 redis
 qdrant-client
+python-dotenv

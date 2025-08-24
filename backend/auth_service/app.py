@@ -1,12 +1,12 @@
 # app.py
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
 import uvicorn
-import os
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy import Column, Integer, String, select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
+import jwt
 from utils import (
     get_db, 
     SECRET_KEY,
@@ -15,7 +15,6 @@ from utils import (
     pwd_context,
 )
 from models import LoginReq, RegisterReq
-from jose import jwt
 from tables import User
 
 IS_PROD = False
@@ -40,10 +39,12 @@ def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 def create_access_token(data: dict):
+    """Create JWT access token using PyJWT"""
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)
+    expire = datetime.now(timezone.utc) + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)
     to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM), expire
+    token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return token, expire
 
 
 @app.get("/health")
@@ -76,6 +77,7 @@ async def register(req: RegisterReq, db: AsyncSession = Depends(get_db)):
     )
     db.add(new_user)
     await db.commit()
+    await db.refresh(new_user)  # Ensure new_user.id is populated
 
     access_token, expire = create_access_token(data={"email": new_user.email})
     return {"access_token": access_token, "expire": expire, "user_id": new_user.id}

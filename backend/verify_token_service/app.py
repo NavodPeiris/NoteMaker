@@ -1,43 +1,61 @@
-# app.py
-import datetime
-from fastapi import FastAPI, Depends, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from mangum import Mangum
-import uvicorn
-from utils import (
-    get_current_user_id
-)
+import jwt
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+ALGORITHM = "HS256"
+
+def lambda_handler(event, context):
+    try:
+        JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+    
+        auth_header = event.get("authorizationToken", "")
+        auth_token = None
+        if auth_header.startswith("Bearer "):
+            auth_token = auth_header.split(" ")[1]
+
+        if not auth_token:
+            print("Error: No authorization token provided")
+            return generatePolicy("user", "Deny", event.get("methodArn"), "Unauthorized: No token provided")
+
+        user_details = decode_auth_token(auth_token, JWT_SECRET_KEY)
+
+        email = user_details.get("email")
+
+        print('Authorized JWT Token')
+        return generatePolicy('user', 'Allow', event['methodArn'], "Authorized : Valid JWT Token")
+
+    except jwt.ExpiredSignatureError:
+        print("Error: Token has expired")
+        return generatePolicy("user", "Deny", event.get("methodArn"), "Error: Token has expired")
+
+    except jwt.InvalidTokenError:
+        print("Error: Invalid token")
+        return generatePolicy("user", "Deny", event.get("methodArn"), "Error: Invalid JWT Token")
+
+    except Exception as e:
+        print(f"Lambda Error: {str(e)}")  # Log exact error
+        return generatePolicy("user", "Deny", event.get("methodArn"), f"Lambda Error: {str(e)}")
 
 
-IS_PROD = False
+def generatePolicy(principalId, effect, resource, message):
+    authResponse = {
+        'principalId': principalId,
+        'policyDocument': {
+            'Version': '2012-10-17',
+            'Statement': [{
+                'Action': 'execute-api:Invoke',
+                'Effect': effect,
+                'Resource': resource
+            }]
+        },
+        "context": {
+            "errorMessage": message
+        }
+    }
+    return authResponse
 
-
-app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-@app.get("/health")
-async def health_check():
-    return {"message": "running"}
-
-
-@app.get("/auth/verify-token")
-async def login(user_id: int = Depends(get_current_user_id)):
-    if user_id:
-        return {"user_id": user_id}
-    else:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
-
-
-if __name__ == "__main__":
-    if IS_PROD:
-        handler = Mangum(app, lifespan="off")  # Lambda entry point
-    else:
-        uvicorn.run("app:app", host="0.0.0.0", port=8004, reload=True)
+def decode_auth_token(auth_token: str, secret_key: str):
+    auth_token = auth_token.replace('Bearer ', '')
+    return jwt.decode(jwt=auth_token, key=secret_key, algorithms=[ALGORITHM], options={"verify_signature": True, "verify_exp": True})

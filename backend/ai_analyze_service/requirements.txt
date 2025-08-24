@@ -9,3 +9,4 @@ langchain-groq
 qdrant-client
 google-generativeai
 langchain-google-genai
+python-dotenv

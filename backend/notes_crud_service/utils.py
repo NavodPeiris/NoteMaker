@@ -20,10 +20,7 @@ text_splitter = RecursiveCharacterTextSplitter(
     chunk_overlap=50, # keep small overlap for context
 )
 
-# JWT config
-SECRET_KEY = "supersecretkey"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_DAYS = 7
+
 CACHE_EXPIRE = 3600
 
 

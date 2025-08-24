@@ -31,6 +31,8 @@ Note Maker is not your average notes app. It provides you with the ability to ch
     REDIS_HOST=localhost
     REDIS_PORT=6379
     GOOGLE_API_KEY=<add your key>
+    QDRANT_URL=http://localhost:6333
+    JWT_SECRET_KEY=supersecretkey
     ```
 
 3. create tables

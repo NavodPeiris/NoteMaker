@@ -8,11 +8,6 @@ from dotenv import load_dotenv
 import os
 from passlib.context import CryptContext
 
-# JWT config
-SECRET_KEY = "supersecretkey"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_DAYS = 7
-
 # Password Hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -20,6 +15,11 @@ bearer_scheme = HTTPBearer(auto_error=False)
 
 load_dotenv()
 DB_URL = os.getenv("DB_URL")
+
+# JWT config
+SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_DAYS = 7
 
 engine = create_async_engine(DB_URL, echo=True)
 
