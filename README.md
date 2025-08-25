@@ -12,13 +12,12 @@ Note Maker is not your average notes app. It provides you with the ability to ch
 - Embedding Model Provider: Google Generative AI Embeddings 
 - Vector Store Hosting: Qdrant Cloud
 - Database: Aurora Postgres DB
-- Cache: Amazon ElastiCache
+- Hosted Redis Cache: Amazon ElastiCache
 - Backend Deployment: AWS Lambda
 - API Gateway: Amazon API Gateway
 - Authentication: API Gateway Authorizer with JWT
 - Frontend Hosting: Amazon S3
 - CDN: Amazon CloudFront
-- DNS: Route 53 DNS
 
 ### Run Locally
 
@@ -33,28 +32,32 @@ Note Maker is not your average notes app. It provides you with the ability to ch
     GOOGLE_API_KEY=<add your key>
     QDRANT_URL=http://localhost:6333
     JWT_SECRET_KEY=supersecretkey
-    ```
+    ```  
+3. install backend dependencies
+    - `cd backend`
+    - `pip install -r requirements.txt`
 
-3. create tables
+4. create tables
      - `cd backend/setup_tables`
      - `python tables.py`
 
-4. run ai_analyze_service
+5. run ai_analyze_service
      - `cd backend/ai_analyze_service`
      - `python app.py`
 
-5. run auth_service
+6. run auth_service
      - `cd backend/auth_service`
      - `python app.py`
 
-6. run notes_crud_service
+7. run notes_crud_service
      - `cd backend/notes_crud_service`
      - `python app.py`
 
-7. run verify_token_service
+8. run verify_token_service
      - `cd backend/verify_token_service`
      - `python app.py`
 
-7. run frontend
+9. run frontend
+     - `npm install`
      - `cd frontend`
      - `npm run dev`

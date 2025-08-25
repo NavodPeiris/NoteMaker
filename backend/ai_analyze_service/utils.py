@@ -25,7 +25,7 @@ API_KEY = os.getenv("GROQ_API_KEY")
 DB_URL = os.getenv("DB_URL")
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 QDRANT_URL = os.getenv("QDRANT_URL")
-QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
+QDRANT_API_KEY = os.getenv("QDRANT_API_KEY", None)
 
 COLLECTION_NAME = "notes"
 
