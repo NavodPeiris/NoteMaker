@@ -1,0 +1,117 @@
+name: E2E + SonarQube
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  run-python-app:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      DB_URL: postgresql+asyncpg://admin:admin123@localhost:5432/mydb
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+      QDRANT_URL: http://localhost:6333
+      JWT_SECRET_KEY: supersecretkey
+      
+    steps:
+      - uses: actions/checkout@v4
+
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      # Set up Docker Compose (run on root)
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      # Start containers
+      - name: Run docker-compose
+        run: docker-compose -f docker-compose.yml up -d
+
+      # Wait for services
+      - name: Wait for services
+        run: sleep 
+        
+      # install dependencies
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: backend
+
+      # Create Tables
+      - name: Create DB Tables
+        run: python tables.py
+        working-directory: backend/setup_tables
+
+      # Run All Services
+      - name: Run all services
+        run: |
+          python backend/ai_analyze_service/app.py &
+          python backend/auth_service/app.py &
+          python backend/notes_crud_service/app.py &
+          wait
+
+
+  test-and-coverage:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout code
+      - uses: actions/checkout@v4
+
+      # 2. Set up Node
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm ci
+        working-directory: frontend
+
+      # 4. Build app (with coverage instrumentation)
+      - name: Build React app with coverage
+        run: npm run build
+        working-directory: frontend
+
+      # 5. Start the app in background
+      - name: Start React app
+        run: npm run start &
+        working-directory: frontend
+      
+      - name: Wait for server
+        run: npx wait-on http://localhost:5173
+        working-directory: frontend
+
+      # 6. Run Playwright tests
+      - name: Run Playwright tests
+        run: npm run test:e2e-coverage
+        working-directory: frontend
+
+      # 7. Upload coverage as artifact (optional)
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: coverage/
+        working-directory: frontend
+
+      # 8. SonarQube Analysis
+      - name: Run SonarQube Scanner
+        uses: sonarsource/sonarcloud-github-action@v2
+        with:
+          projectKey: NavodPeiris_NoteMaker
+          organization: navodpeiris
+          token: ${{ secrets.SONAR_TOKEN }}
+          extraProperties: |
+            sonar.javascript.lcov.reportPaths=coverage/lcov.info
+            sonar.sources=src
+        working-directory: frontend

@@ -1,4 +1,10 @@
 postgres_data
 qdrant_data
 redis_data
-*.env
+deploy.env
+local.env
+.nyc_output
+coverage
+sonarqube_data
+sonarqube_extensions
+sonarqube_logs
