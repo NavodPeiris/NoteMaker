@@ -8,6 +8,7 @@ pydantic
 langchain
 langchain-groq
 langchain-community
+langchain_experimental
 qdrant-client
 google-generativeai
 langchain-google-genai

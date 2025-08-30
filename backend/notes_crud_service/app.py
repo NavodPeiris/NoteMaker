@@ -17,7 +17,6 @@ from utils import (
     qdrant_client
 )
 from models import ReadReq, CreateReq, UpdateReq, DeleteReq, GetGroupsReq, CreateGroupsReq
-from jose import jwt
 from tables import Notes, Groups
 from sqlalchemy.orm import aliased
 from qdrant_client.http import models
