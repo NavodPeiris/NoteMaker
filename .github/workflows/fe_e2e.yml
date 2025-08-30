@@ -38,7 +38,7 @@ jobs:
 
       # Wait for services
       - name: Wait for services
-        run: sleep 5000
+        run: sleep 5
         
       # install backend dependencies
       - name: Install dependencies
