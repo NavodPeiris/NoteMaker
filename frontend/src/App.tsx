@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Icon from "./assets/icon.png";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";

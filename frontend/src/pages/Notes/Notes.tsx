@@ -24,6 +24,8 @@ import ComboBox from '@/components/ComboBox/ComboBox';
 import { type listItem } from '@/types/ListItem';
 import { useFilterGroup } from '@/zustand_stores/filter_group_store';
 import { useFilterTags } from '@/zustand_stores/filter_tags_store';
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
 
 function Notes() {
 
@@ -64,8 +66,13 @@ function Notes() {
 
 
   const { data: notesData, isLoading: notesLoading, error: notesError } = useNotes({page: page, pageSize: PAGE_SIZE, user_id: user_id})
+  if(notesError) toast.error(notesError.message)
+
   const { data: kgData, isLoading: kgLoading, error: kgError } = useKnowledgeGraph({user_id: user_id})
+  if(kgError) toast.error(kgError.message)
+
   const { data: groups, isLoading, error } = useGroups({user_id: user_id})
+  if(error) toast.error(error.message)
 
   console.log("kgEdges: ", kgData?.kgEdges)
 
@@ -106,6 +113,7 @@ function Notes() {
 
   return (
     <div className='w-full min-w-screen min-h-screen px-4 py-4 bg-gray-100/70 bg-clip-padding backdrop-filter backdrop-blur-sm border border-gray-100 text-gray-800'>
+      <Toaster richColors position="top-center"/>
       <div className='flex justify-between items-center w-10/12 mx-auto p-2'>
           <div className='flex items-center gap-4'>
           <img src={Icon} className='size-12' />

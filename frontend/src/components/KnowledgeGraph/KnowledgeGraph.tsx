@@ -1,5 +1,4 @@
-import { div } from 'framer-motion/client';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { GraphCanvas, useSelection, type GraphEdge, type GraphNode} from 'reagraph';
 
 interface KGInputs {

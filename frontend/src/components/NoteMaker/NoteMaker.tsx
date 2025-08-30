@@ -35,6 +35,7 @@ export default function NoteMaker() {
   const queryClient = useQueryClient()
 
   const { data: groups, isLoading, error } = useGroups({user_id: user_id})
+  if(error) toast.error(error.message)
   
   return( isLoading ? (<div>Loading</div>): (
     <div className="flex px-2 justify-start">

@@ -1,6 +1,5 @@
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -17,7 +16,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { type NoteItem } from "@/types/NoteItem"
 import { type GroupsItem } from "@/types/GroupsItem"
 import { useEffect, useState } from "react"
@@ -51,6 +49,8 @@ export default function NoteCard({noteItem} : NoteProps) {
   const user_id = Number(localStorage.getItem('user_id'))
 
   const { data: groups, isLoading, error } = useGroups({user_id: user_id})
+  if(error) toast.error(error.message)
+
   const setNoteSelected = useNoteSelect((store) => store.setNoteSelected)
 
   useEffect(() => {

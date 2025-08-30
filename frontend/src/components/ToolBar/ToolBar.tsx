@@ -8,7 +8,6 @@ import { useToolStore } from "@/zustand_stores/tool_select_store"
 export default function ToolBar() {
 
   const setTool = useToolStore((tool) => tool.setTool)
-  const toolSelected = useToolStore((tool) => tool.toolSelected)
 
   return (
     <ToggleGroup className="gap-2" type="single">
