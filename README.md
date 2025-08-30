@@ -1,4 +1,5 @@
-## Note Maker
+## Note Maker 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NavodPeiris_NoteMaker&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=NavodPeiris_NoteMaker)
 
 Note Maker is not your average notes app. It provides you with the ability to chat with your notes. It constructs knowledge graph using your notes
 

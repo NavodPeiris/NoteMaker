@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-      DB_URL: postgresql+asyncpg://admin:admin123@localhost:5432/mydb
+      DB_URL: ${{ secrets.DB_URL }}
       REDIS_HOST: localhost
       REDIS_PORT: 6379
       GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
       QDRANT_URL: http://localhost:6333
-      JWT_SECRET_KEY: supersecretkey
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
       
     steps:
       - uses: actions/checkout@v4
@@ -101,8 +101,8 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: coverage
-          path: coverage/
-        working-directory: frontend
+          path: frontend/coverage/
+
 
       # 8. SonarQube Analysis
       - name: Run SonarQube Scanner
@@ -112,6 +112,5 @@ jobs:
           organization: navodpeiris
           token: ${{ secrets.SONAR_TOKEN }}
           extraProperties: |
-            sonar.javascript.lcov.reportPaths=coverage/lcov.info
-            sonar.sources=src
-        working-directory: frontend
+            sonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info
+            sonar.sources=frontend/src
