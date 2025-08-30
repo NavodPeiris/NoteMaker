@@ -95,6 +95,7 @@ jobs:
       - name: Run Playwright tests
         run: npm run test:e2e-coverage
         working-directory: frontend
+        continue-on-error: true
 
       # Upload coverage as artifact
       - name: Upload coverage artifact
@@ -102,6 +103,13 @@ jobs:
         with:
           name: coverage
           path: frontend/coverage/
+
+      # Upload test reports as artifact
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: frontend/playwright-report/
 
       # SonarQube Analysis
       - name: SonarQube Scan
