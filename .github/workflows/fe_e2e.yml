@@ -38,9 +38,9 @@ jobs:
 
       # Wait for services
       - name: Wait for services
-        run: sleep 
+        run: sleep 5000
         
-      # install dependencies
+      # install backend dependencies
       - name: Install dependencies
         run: pip install -r requirements.txt
         working-directory: backend
@@ -58,31 +58,23 @@ jobs:
           python backend/notes_crud_service/app.py &
           wait
 
-
-  test-and-coverage:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-      # 1. Checkout code
-      - uses: actions/checkout@v4
-
-      # 2. Set up Node
+      # Set up Node
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
-      # 3. Install dependencies
+      # Install frontend dependencies
       - name: Install dependencies
         run: npm ci
         working-directory: frontend
 
-      # 4. Build app (with coverage instrumentation)
+      # Build app (with coverage instrumentation)
       - name: Build React app with coverage
         run: npm run build
         working-directory: frontend
 
-      # 5. Start the app in background
+      # Start the app in background
       - name: Start React app
         run: npm run start &
         working-directory: frontend
@@ -91,26 +83,20 @@ jobs:
         run: npx wait-on http://localhost:5173
         working-directory: frontend
 
-      # 6. Run Playwright tests
+      # Run Playwright tests
       - name: Run Playwright tests
         run: npm run test:e2e-coverage
         working-directory: frontend
 
-      # 7. Upload coverage as artifact (optional)
+      # Upload coverage as artifact
       - name: Upload coverage artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: frontend/coverage/
 
-
-      # 8. SonarQube Analysis
-      - name: Run SonarQube Scanner
-        uses: sonarsource/sonarcloud-github-action@v2
-        with:
-          projectKey: NavodPeiris_NoteMaker
-          organization: navodpeiris
-          token: ${{ secrets.SONAR_TOKEN }}
-          extraProperties: |
-            sonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info
-            sonar.sources=frontend/src
+      # SonarQube Analysis
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
