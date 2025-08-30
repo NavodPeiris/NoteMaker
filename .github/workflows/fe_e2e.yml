@@ -76,7 +76,7 @@ jobs:
 
       # Start the app in background
       - name: Start React app
-        run: npm run start &
+        run: npm run dev &
         working-directory: frontend
       
       - name: Wait for server
