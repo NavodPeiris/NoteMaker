@@ -97,15 +97,15 @@ jobs:
         working-directory: frontend
         continue-on-error: true
 
-      # Upload coverage as artifact
-      - name: Upload coverage artifact
+      # Upload coverage as artifacts
+      - name: Upload coverage artifacts
         uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: frontend/coverage/
 
-      # Upload test reports as artifact
-      - name: Upload coverage artifact
+      # Upload test reports as artifacts
+      - name: Upload test report artifacts
         uses: actions/upload-artifact@v4
         with:
           name: test-reports
