@@ -56,7 +56,10 @@ jobs:
           python backend/ai_analyze_service/app.py &
           python backend/auth_service/app.py &
           python backend/notes_crud_service/app.py &
-          wait
+
+      # Wait for services
+      - name: Wait for services
+        run: sleep 20
 
       # Set up Node
       - name: Set up Node.js
