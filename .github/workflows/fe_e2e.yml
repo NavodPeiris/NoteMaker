@@ -83,6 +83,11 @@ jobs:
         run: npx wait-on http://localhost:5173
         working-directory: frontend
 
+      # install playwright browsers
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+        working-directory: frontend
+
       # Run Playwright tests
       - name: Run Playwright tests
         run: npm run test:e2e-coverage
