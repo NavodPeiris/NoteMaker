@@ -122,6 +122,6 @@ jobs:
             -Dsonar.language=ts
             -Dsonar.sources=./src
             -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
-            -Dsonar.exclusions=**/node_modules/**,**/backend/**,**/postgres_data/**,**/qdrant_data/**,**/redis_data/**, **/.vscode/**, **/.nyc_output/**
+            -Dsonar.exclusions=**/node_modules/**,**/backend/**,**/postgres_data/**,**/qdrant_data/**,**/redis_data/**,**/.vscode/**,**/.nyc_output/**
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
